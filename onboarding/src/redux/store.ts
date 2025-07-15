@@ -1,11 +1,11 @@
 import { configureStore, Tuple } from "@reduxjs/toolkit";
 import rootReducer from "./reducers";
-import onboardingApi from './middlewares/onboardingApiRequests';
+import api from './middlewares/apiRequest';
 // import error from './middlewares/apiRequest';
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...[onboardingApi]),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...[api]),
 });
 
 // ✅ Define RootState type
