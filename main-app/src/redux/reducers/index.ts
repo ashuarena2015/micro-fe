@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 import todoListReducer from "./todolist";
-import usersReducer from "./users";
+import userReducer from "./users";
 import globalReducer from "./global";
 
 const appReducer = combineReducers({
     todoListReducer,
-    usersReducer,
+    userReducer,
     globalReducer
 });
 

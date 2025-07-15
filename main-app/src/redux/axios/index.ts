@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const config = {
-	baseURL: "https://jsonplaceholder.typicode.com",
+	baseURL: "http://localhost:3001", // Update with your backend URL
+	withCredentials: true 
 };
 const axiosInstance = axios.create(config);
 

@@ -16,7 +16,7 @@ const Users = () => {
     const dispatch = useDispatch();
     // Replace 'RootState' with the actual type of your Redux root state if different
      // adjust the import path as needed
-    const { users } = useSelector((state: RootState) => state.usersReducer) as { users: User[] };
+    const { user } = useSelector((state: RootState) => state.userReducer) as unknown as { user: User };
     const { message: globalMessage, msgType } = useSelector((state: RootState) => state.globalReducer)
 
     const [messageVariant, setMessageVariant] = useState(msgType);
@@ -41,19 +41,6 @@ const Users = () => {
         <>
             <h2>Users</h2>
             {globalMessage && showMessage && <Alert onClose={() => setShowMessage(false)} key={messageVariant} dismissible variant={messageVariant}>{globalMessage}</Alert>}
-            <ListGroup as="ol" numbered>
-                {users?.map((user, index) => {
-                    return (
-                        <ListGroup.Item as="li" key={index} className="d-flex justify-content-between align-items-start">
-                            <div className="ms-2 me-auto">
-                                <div className="fw-bold">{user.name}</div>
-                                {user.email}
-                            </div>
-                            <Badge bg="primary" pill>14</Badge>
-                        </ListGroup.Item>
-                    )
-                })}
-            </ListGroup>
         </>
     )
 }

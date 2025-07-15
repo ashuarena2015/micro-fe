@@ -7,20 +7,29 @@ const api = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => an
     }
 
 
+    const { url, method, data, onSuccess, onError, dispatchType } = action.payload;
+
+    console.log('action.payload11111', action.payload);
     try {
-        const { url, method, data, onSuccess, onError} = action.payload;
-        console.log({url, method, data, onSuccess, onError});
-        const response = await axiosInstance.get(url, {
+        const response = await axiosInstance({
+            url,
             data,
-            method
+            method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
         });
-        console.log({response});
-        dispatch({
-            type: 'users/getUsers',
-            payload: {
-                users: response?.data
-            }
-        })
+        if(
+            dispatchType === 'accountAuthentication'
+            || dispatchType === 'accountLogin'
+            || dispatchType === 'accountCreation'
+            || dispatchType === 'accountVerification'
+            || dispatchType === 'accountForgotPassword'
+            || dispatchType === 'accountResetPassword'
+        ) {
+            typeof onSuccess === 'function' && onSuccess(response);
+            return response;
+        }
         dispatch({
             type: 'GLOBAL_MESSAGE',
             payload: {
@@ -29,18 +38,22 @@ const api = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => an
             }
         })
     } catch (error) {
-        if (error && typeof error === 'object' && 'response' in error) {
-            console.log({ error: (error as any).response });
-        } else {
-            console.log({ error });
-        }
-        dispatch({
-            type: 'GLOBAL_MESSAGE',
-            payload: {
-                message: error instanceof Error ? error.message : 'An unknown error occurred',
-                msgType: 'error'
+        if (typeof onError === 'function') {
+
+            if (error && typeof error === 'object' && 'response' in error) {
+                return onError(error.response);
+            } else {
+                console.log({ error });
             }
-        })
+            dispatch({
+                type: 'GLOBAL_MESSAGE',
+                payload: {
+                    message: error instanceof Error ? error.message : 'An unknown error occurred',
+                    msgType: 'error'
+                }
+            })
+            return onError(error);
+        }
     }
 
 }

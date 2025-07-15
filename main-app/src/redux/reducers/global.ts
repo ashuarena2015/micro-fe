@@ -36,7 +36,6 @@ interface GlobalAction {
 }
 
 const globalReducer = (state = initialState, action: GlobalAction): typeof initialState => {
-    console.log({action});
     switch (action.type) {
         case GLOBAL_MESSAGE:
             return {

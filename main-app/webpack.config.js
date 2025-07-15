@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { ModuleFederationPlugin } = require('webpack').container;
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
 
 module.exports = {
   mode: "development", // or "production" for production build
@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -87,7 +87,8 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'mainApp',
       remotes: {
-        childApp: 'childApp@http://localhost:3002/remoteEntry.js',
+        // childApp: 'childApp@http://localhost:3002/remoteEntry.js',
+        // profileApp: 'profileApp@http://localhost:3003/remoteEntry.js',
       },
       shared: {
         react: {

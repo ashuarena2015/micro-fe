@@ -9,12 +9,10 @@ const api = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => an
 
     try {
         const { url, method, data, onSuccess, onError} = action.payload;
-        console.log({url, method, data, onSuccess, onError});
         const response = await axiosInstance.get(url, {
             data,
             method
         });
-        console.log({response});
         dispatch({
             type: 'users/getUsers',
             payload: {
