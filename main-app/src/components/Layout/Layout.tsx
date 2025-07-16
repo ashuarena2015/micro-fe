@@ -34,11 +34,6 @@ const items: MenuProps["items"] = [
         label: "Dashboard",
     },
     {
-        key: "/child",
-        icon: <AppstoreAddOutlined />,
-        label: "Child Application",
-    },
-    {
         key: "/profile",
         icon: <ProfileOutlined />,
         label: "Profile",
@@ -97,38 +92,40 @@ const LayoutWrapper: React.FC = () => {
 
   const defaultMenuKey = window.location.pathname;
   return (
-    <Layout hasSider>
-      <Sider style={siderStyle} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={[defaultMenuKey]}
-          items={items}
-          onClick={handleClick}
-        />
-      </Sider>
-      <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <PageHeader />
-        </Header>
-        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
-          <div
-            style={{
-              padding: 24,
-              textAlign: "center",
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-          <Outlet />
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          ========== Micro FrontEnd with React and Ant Design ==========
-        </Footer>
+    <div className="main-layout">
+      <Layout hasSider>
+        <Sider style={siderStyle} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+          <div className="demo-logo-vertical" />
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={[defaultMenuKey]}
+            items={items}
+            onClick={handleClick}
+          />
+        </Sider>
+        <Layout>
+          <Header style={{ padding: 0, background: colorBgContainer }}>
+            <PageHeader />
+          </Header>
+          <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
+            <div
+              style={{
+                padding: 24,
+                textAlign: "center",
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+            <Outlet />
+            </div>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            ========== Micro FrontEnd with React and Ant Design ==========
+          </Footer>
+        </Layout>
       </Layout>
-    </Layout>
+    </div>
   );
 };
 

@@ -14,7 +14,7 @@ const Layout = () => {
   const authentication = async () => {
     setIsLoading(true);
     await dispatch({
-      type: "apiRequest",
+      type: "apiOnboardingRequest",
       payload: {
         url: `/api/account/user-info`,
         method: "GET",
@@ -24,6 +24,7 @@ const Layout = () => {
           }
         },
         onSuccess: (getSuccessResponse: any) => {
+          console.log('getSuccessResponse?.data', getSuccessResponse?.data);
           if (getSuccessResponse?.data?.isProfileFetched) {
             setIsLoading(false);
             setIsLoggedIn(true);

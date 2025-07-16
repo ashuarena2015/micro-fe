@@ -16,8 +16,8 @@ const Users = () => {
     const dispatch = useDispatch();
     // Replace 'RootState' with the actual type of your Redux root state if different
      // adjust the import path as needed
-    const { user } = useSelector((state: RootState) => state.userReducer) as unknown as { user: User };
-    const { message: globalMessage, msgType } = useSelector((state: RootState) => state.globalReducer)
+    const { user } = useSelector((state: RootState) => state.parentRedux.userReducer) as unknown as { user: User };
+    const { message: globalMessage, msgType } = useSelector((state: RootState) => state.parentRedux.globalReducer)
 
     const [messageVariant, setMessageVariant] = useState(msgType);
     const [showMessage, setShowMessage] = useState(true);

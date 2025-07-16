@@ -1,8 +1,11 @@
 import axiosInstance from '../axios';
 import { Dispatch } from 'redux';
 
-const api = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => any) => async (action: any) => {
-    if(action.type !== 'apiRequest') {
+console.log("✅ Child onboarding middleware loaded");
+
+const apiOnboarding = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => any) => async (action: any) => {
+    console.log({action})
+    if(action.type !== 'apiOnboardingRequest') {
         return next(action);
     }
 
@@ -19,7 +22,7 @@ const api = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => an
             dispatch({
                 type: 'user/getUser',
                 payload: {
-                    user: response?.data
+                    user: response?.data?.user
                 }
             })
             return onSuccess(response);
@@ -48,4 +51,4 @@ const api = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => an
 
 }
 
-export default api;
+export default apiOnboarding;

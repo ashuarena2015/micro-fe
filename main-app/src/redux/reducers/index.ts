@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
-import todoListReducer from "./todolist";
 import userReducer from "./users";
 import globalReducer from "./global";
 
 const appReducer = combineReducers({
-    todoListReducer,
+  parentRedux: combineReducers({
     userReducer,
     globalReducer
+  })
 });
 
 const rootReducer = (state: any, action: any) => {

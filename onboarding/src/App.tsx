@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import MainRoutes from "./Routes";
 
-const App: React.FC = () => {
+const OnboardingApp: React.FC = () => {
   return (
       <BrowserRouter>
         <MainRoutes />
@@ -11,4 +11,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default OnboardingApp;

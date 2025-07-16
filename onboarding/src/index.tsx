@@ -1,2 +1,2 @@
-// src/index.tsx
 import("./bootstrap");
+//export { default } from './App';

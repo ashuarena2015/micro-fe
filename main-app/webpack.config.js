@@ -87,17 +87,20 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'mainApp',
       remotes: {
-        // childApp: 'childApp@http://localhost:3002/remoteEntry.js',
-        // profileApp: 'profileApp@http://localhost:3003/remoteEntry.js',
+        profileApp: 'profileApp@http://localhost:3003/remoteEntry.js',
       },
       shared: {
         react: {
           singleton: true,
           requiredVersion: "18.2.0",
+          strictVersion: true,  // Add this
+          version: "18.2.0"    // Explicit version
         },
         "react-dom": {
           singleton: true,
           requiredVersion: "18.2.0",
+          strictVersion: true,  // Add this
+          version: "18.2.0"    // Explicit version
         },
       }
 

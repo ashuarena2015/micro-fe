@@ -79,6 +79,11 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      react: path.resolve('./node_modules/react'),
+      'react-dom': path.resolve('./node_modules/react-dom'),
+      //'./apiRequest': path.resolve(__dirname, 'src/redux/middlewares/apiRequest')
+    }
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -87,23 +92,26 @@ module.exports = {
     }),
     new MiniCssExtractPlugin(),
     new ModuleFederationPlugin({
-    name: 'profileApp',
-    filename: 'remoteEntry.js',
-    exposes: {
-      './App': './src/App',
-    },
-    shared: {
-      react: {
-        singleton: true,
-        requiredVersion: "18.2.0",
+      name: 'profileApp',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './bootstrap': './src/bootstrap',
       },
-      "react-dom": {
-        singleton: true,
-        requiredVersion: "18.2.0",
-      },
-    }
-
-  }),
+      shared: {
+        react: {
+          singleton: true,
+          requiredVersion: "18.2.0",
+          strictVersion: true,  // Add this
+          version: "18.2.0"    // Explicit version
+        },
+        "react-dom": {
+          singleton: true,
+          requiredVersion: "18.2.0",
+          strictVersion: true,  // Add this
+          version: "18.2.0"    // Explicit version
+        },
+      }
+    }),
   ],
   devServer: {
     static: {

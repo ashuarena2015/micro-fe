@@ -7,6 +7,4 @@ export const config = {
 
 const axiosInstance = axios.create(config);
 
-console.log('Axios baseURL:', axiosInstance.defaults.baseURL);
-
 export default axiosInstance;
