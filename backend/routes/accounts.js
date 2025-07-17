@@ -288,5 +288,66 @@ routerAccount.get('/user-info', verifyToken, async (req, res) => {
     }
 })
 
+
+// Multer config
+// Configure disk storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, "../uploads")); // Ensure this path exists
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, "profilePics-" + uniqueSuffix + ext);
+  },
+});
+
+const upload = multer({ storage });
+
+routerAccount.post("/user-update", upload.single("profilePic"), async (req, res) => {
+  try {
+    console.log("req.body", req.body);       // ✅ All text fields
+    console.log("req.file", req.file);       // ✅ Uploaded file object
+
+    const { firstName, lastName } = req.body;
+    const { originalname, filename, path: filePath } = req.file;
+
+    const outputFilename = `profilePics-${originalname}`;
+    const outputPath = path.join(__dirname, "../uploads", outputFilename);
+
+    // Example: if you want to rename or move the file
+    // fs.renameSync(req.file.path, outputPath); // optional
+
+    res.status(200).json({
+      message: "Image uploaded",
+      path: outputFilename,
+    });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({ error: "Upload failed" });
+  }
+});
+
+
+// routerAccount.post('/user-update', verifyToken, async (req, res) => {
+
+//     console.log('user-update', req);
+
+//     // try {
+//     //     const userInfo = await AccountCreation.findOne({ email });
+
+//     //     return res
+//     //         .status(200)
+//     //         .json({
+//     //             user: userInfo,
+//     //             isProfileFetched: true
+//     //         });
+//     // } catch (error) {
+//     //     return res
+//     //         .status(403)
+//     //         .json({error: error?.errmsg});
+//     // }
+// })
+
 module.exports = { routerAccount };
 

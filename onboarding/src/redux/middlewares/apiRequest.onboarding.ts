@@ -11,12 +11,13 @@ const apiOnboarding = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: 
 
 
     try {
-        const { url, method, data, onSuccess, onError, dispatchType} = action.payload;
+        const { url, method, data, onSuccess, onError, dispatchType, headers} = action.payload;
         console.log('action.payload', action.payload);
         const response = await axiosInstance({
             url,
             data,
-            method
+            method,
+            headers
         });
         if(dispatchType === 'accountDetails') {
             dispatch({

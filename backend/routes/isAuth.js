@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 exports.verifyToken = async (req, res, next) => {
   console.log("Validating Token",  req.cookies.auth);
+  console.log("Validating body",  req.body);
   try {
     const token = req.cookies.auth;
 

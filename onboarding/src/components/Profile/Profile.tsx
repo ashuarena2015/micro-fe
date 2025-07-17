@@ -1,29 +1,31 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Flex, Descriptions, Button, Radio } from "antd";
+import { Flex, Descriptions, Button, Space } from "antd";
 import type { DescriptionsProps, RadioChangeEvent } from "antd";
 import { RootState } from '../../redux/store';
 import { userInfoDesc } from './common';
 
+import EditProfile from "./EditProfile";
+
 const Profile = () => {
-  const [size, setSize] = useState<"default" | "middle" | "small">("default");
+  const [open, setOpen] = useState(false);
 
   const { user } = useSelector((state: RootState) => state.userReducer);
-  console.log({user});
 
     const items: DescriptionsProps["items"] = userInfoDesc(user) || [];
 
-  const onChange = (e: RadioChangeEvent) => {
-    console.log("size checked", e.target.value);
-    setSize(e.target.value);
+  const showDrawer = () => {
+    setOpen(true);
   };
 
   return (
     <Flex style={{ height: "100vh" }}>
-      <Flex>
-        <div>
+      <Flex gap="middle" vertical>
           <Descriptions layout="vertical" items={items} />
-        </div>
+          <Space>
+            <Button type="primary" block onClick={showDrawer}>Edit</Button>
+        </Space>
+        <EditProfile open={open} setOpen={setOpen} />
       </Flex>
       <Flex>Right</Flex>
     </Flex>
