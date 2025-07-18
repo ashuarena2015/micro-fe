@@ -25,7 +25,12 @@ const Profile = () => {
           <Space>
             <Button type="primary" block onClick={showDrawer}>Edit</Button>
         </Space>
-        <EditProfile open={open} setOpen={setOpen} />
+        <EditProfile
+            open={open}
+            setOpen={setOpen}
+            // @ts-ignore
+            user={user}
+        />
       </Flex>
       <Flex>Right</Flex>
     </Flex>

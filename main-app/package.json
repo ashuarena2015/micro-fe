@@ -11,6 +11,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@module-federation/runtime": "^0.17.0",
+    "@module-federation/utilities": "^3.1.61",
     "@mui/material": "^7.2.0",
     "@reduxjs/toolkit": "^2.5.1",
     "antd": "^5.26.4",

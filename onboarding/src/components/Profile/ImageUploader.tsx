@@ -8,20 +8,51 @@ type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 interface ImageUploaderProps {
   setProfilePicInfo: Function;
   setProfileThumbnail: Function;
+  existingImage: String;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ setProfilePicInfo, setProfileThumbnail }) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+const ImageUploader: React.FC<ImageUploaderProps> = ({ setProfilePicInfo, setProfileThumbnail, existingImage }) => {
+  const [fileList, setFileList] = useState<UploadFile[]>([
+    {
+      uid: '-1',
+      name: `${existingImage}`,
+      status: 'done',
+      url: `http://localhost:3001/uploads/${existingImage}`,
+    },
+  ]);
 
-  const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
-    const cleanList = newFileList.map((file) => {
-      const { thumbUrl, ...rest } = file;
-      return rest;
-    });
-    setProfileThumbnail(newFileList[0]?.name);
-    setFileList(newFileList); // For UI
-    setProfilePicInfo(cleanList); // For backend/form submit
-  };
+  const onChange: UploadProps["onChange"] = ({ file, fileList: newFileList }) => {
+  const cleanList = newFileList.map((f) => {
+    const { thumbUrl, ...rest } = f;
+    return rest;
+  });
+
+  // This is the cropped file
+  const croppedFile = file.originFileObj as File;
+
+  if (croppedFile) {
+    // Set thumbnail name (optional)
+    setProfileThumbnail(croppedFile.name);
+
+    // If you want to convert to Base64 or send it manually
+    const reader = new FileReader();
+    reader.readAsDataURL(croppedFile);
+    reader.onload = () => {
+      const base64Image = reader.result;
+      // Send base64Image to backend or preview
+      console.log("Cropped Image Base64", base64Image);
+    };
+
+    // OR: send `croppedFile` directly to backend via FormData
+    // const formData = new FormData();
+    // formData.append("profilePic", croppedFile);
+    // send it to server
+  }
+
+  setFileList(newFileList); // For UI
+  setProfilePicInfo(cleanList); // For backend/form submit
+};
+
 
   const onPreview = async (file: UploadFile) => {
     let src = file.url as string;
@@ -46,7 +77,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ setProfilePicInfo, setPro
         fileList={fileList}
         onChange={onChange}
         onPreview={onPreview}
-        beforeUpload={() => false}
       >
         {fileList.length < 1 && "+ Upload"}
       </Upload>

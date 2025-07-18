@@ -8,9 +8,17 @@ const { Option } = Select;
 interface EditProps {
   open: boolean;
   setOpen: Function;
+  user: {
+    firstName: String;
+    lastName: String;
+    email: String;
+    mobile: Number;
+    aboutSelf: String;
+    profilePic: String;
+  }
 }
 
-const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
+const EditProfile: React.FC<EditProps> = ({ open, setOpen, user }) => {
   const dispatch = useDispatch();
 
   const [form] = Form.useForm();
@@ -29,7 +37,7 @@ const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
       const values = await form.validateFields();
       const formData = new FormData();
       // @ts-ignore
-      formData.append("profilePic", profilePicInfo[0]?.originFileObj); // real File object
+      formData.append("profilePicFile", profilePicInfo[0]?.originFileObj); // real File object
 
       for (const key in values) {
         if (values.hasOwnProperty(key)) {
@@ -71,6 +79,21 @@ const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
     form.setFieldsValue({ profilePicName: profileThumbnail });
   }, [profileThumbnail]);
 
+  useEffect(() => {
+    if(user) {
+        const { firstName, lastName, email, mobile, aboutSelf, profilePic} = user;
+        console.log({profilePic});
+        form.setFieldsValue({
+            firstName,
+            lastName,
+            email,
+            mobile,
+            aboutSelf,
+            profilePic
+        })
+    }
+  }, [user, form])
+
   return (
     <>
       <Drawer
@@ -100,7 +123,7 @@ const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
                 label="First name"
                 rules={[{ required: true, message: "Please enter first name" }]}
               >
-                <Input placeholder="Please enter first name" />
+                <Input placeholder="Please enter first name" value={`${user.firstName}`} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -109,7 +132,7 @@ const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
                 label="Last name"
                 rules={[{ required: true, message: "Please enter last name" }]}
               >
-                <Input placeholder="Please enter last name" />
+                <Input placeholder="Please enter last name" value={`${user.lastName}`} />
               </Form.Item>
             </Col>
           </Row>
@@ -120,7 +143,7 @@ const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
                 label="Email"
                 rules={[{ required: true, message: "Please enter email" }]}
               >
-                <Input placeholder="Please enter email" />
+                <Input placeholder="Please enter email" value={`${user.email}`} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -129,7 +152,7 @@ const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
                 label="Mobile"
                 rules={[{ required: true, message: "Please enter mobile" }]}
               >
-                <Input placeholder="Please enter mobile number" />
+                <Input placeholder="Please enter mobile number" value={`${user.mobile || ''}`} />
               </Form.Item>
             </Col>
           </Row>
@@ -155,7 +178,7 @@ const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name="profilePicName"
+                name="profilePic"
                 label="Profile photo"
                 rules={[
                   {
@@ -164,10 +187,11 @@ const EditProfile: React.FC<EditProps> = ({ open, setOpen }) => {
                   },
                 ]}
                 >
-                <Input hidden name="profilePicName" />
+                <Input hidden />
                 <ImageUploader
                     setProfilePicInfo={setProfilePicInfo}
                     setProfileThumbnail={setProfileThumbnail}
+                    existingImage={user?.profilePic}
                 />
               </Form.Item>
             </Col>

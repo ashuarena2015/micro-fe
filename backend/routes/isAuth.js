@@ -20,6 +20,6 @@ exports.verifyToken = async (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(500).json({ message: "Error Validating Token" });
+    return res.status(403).json({ message: "Error Validating Token" });
   }
 };

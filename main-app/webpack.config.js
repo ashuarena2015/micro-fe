@@ -87,7 +87,7 @@ module.exports = {
     new ModuleFederationPlugin({
       name: 'mainApp',
       remotes: {
-        profileApp: 'profileApp@http://localhost:3003/remoteEntry.js',
+        // profileApp: 'profileApp@http://localhost:3003/remoteEntry.js',
       },
       shared: {
         react: {

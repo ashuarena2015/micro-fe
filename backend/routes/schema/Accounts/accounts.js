@@ -10,6 +10,9 @@ const AccountSchema = new mongoose.Schema(
     lastName: { type: String, required: true },
     forgot_password: { type: Number, default: null },
     role: { type: String, default: "user" }, // 'user' or 'admin'
+    aboutSelf: { type: String },
+    mobile: { type: Number },
+    profilePic: { type: String }
   },
   { timestamps: true, discriminatorKey: "kind" },
 );

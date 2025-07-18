@@ -6,10 +6,7 @@ const api = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => an
         return next(action);
     }
 
-
     const { url, method, data, onSuccess, onError, dispatchType } = action.payload;
-
-    console.log('action.payload11111', action.payload);
     try {
         const response = await axiosInstance({
             url,
@@ -26,6 +23,8 @@ const api = ({ dispatch }: { dispatch: Dispatch }) => (next: (action: any) => an
             || dispatchType === 'accountVerification'
             || dispatchType === 'accountForgotPassword'
             || dispatchType === 'accountResetPassword'
+            || dispatchType === 'accountLogout'
+            || dispatchType === 'accountGetUsers'
         ) {
             typeof onSuccess === 'function' && onSuccess(response);
             return response;

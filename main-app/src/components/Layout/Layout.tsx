@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Outlet } from "react-router-dom";
 import {
   ProfileOutlined,
@@ -13,6 +13,8 @@ import {
 import type { MenuProps } from "antd";
 import { Layout, Menu, theme, Button } from "antd";
 import PageHeader from "./PageHeader";
+import './Layout.css';
+import { RootState } from "../../redux/store";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -34,11 +36,6 @@ const items: MenuProps["items"] = [
         label: "Dashboard",
     },
     {
-        key: "/profile",
-        icon: <ProfileOutlined />,
-        label: "Profile",
-    },
-    {
         key: "/users",
         icon: <UsergroupAddOutlined />,
         label: "Users",
@@ -57,6 +54,7 @@ const LayoutWrapper: React.FC = () => {
     navigate(e.key); // Navigate to route using menu item key
   };
 
+  const { loginUser } = useSelector((state: RootState) => state.parentRedux?.userReducer);
   const [isAuthenticationLoading, setIsAuthenticationLoading] = React.useState(true);
   const [isAuth, setIsAuth] = React.useState(false);
 
@@ -74,8 +72,15 @@ const LayoutWrapper: React.FC = () => {
         },
         onSuccess: (getSuccessResponse: any) => {
           if(getSuccessResponse?.data?.isAuthLogin) {
+            console.log('getSuccessResponse?.data', getSuccessResponse?.data);
             setIsAuthenticationLoading(false);
             setIsAuth(true);
+            dispatch({
+              type: 'users/setLoginUser',
+              payload: {
+                loginUser: getSuccessResponse?.data?.user
+              }
+            })
           } else {
             navigate("/");
           }
@@ -97,7 +102,7 @@ const LayoutWrapper: React.FC = () => {
         <Sider style={siderStyle} collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
           <div className="demo-logo-vertical" />
           <Menu
-            theme="dark"
+            theme="light"
             mode="inline"
             defaultSelectedKeys={[defaultMenuKey]}
             items={items}
@@ -106,7 +111,10 @@ const LayoutWrapper: React.FC = () => {
         </Sider>
         <Layout>
           <Header style={{ padding: 0, background: colorBgContainer }}>
-            <PageHeader />
+            <PageHeader
+              // @ts-ignore
+              loginUser={loginUser}
+            />
           </Header>
           <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
             <div

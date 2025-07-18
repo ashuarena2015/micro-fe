@@ -6,7 +6,8 @@ import {
 
 // Initial state
 const initialState = {
-    users: []
+    users: [],
+    loginUser: {}
 };
 
 // Reducer
@@ -17,8 +18,11 @@ const usersReducer = createSlice({
     reducers: {
         getUsers: (state, action) => {
             state.users =  action.payload.users
+        },
+        setLoginUser: (state, action) => {
+            state.loginUser =  action.payload.loginUser
         }
     }
 })
-export const { getUsers } = usersReducer.actions;
+export const { getUsers, setLoginUser } = usersReducer.actions;
 export default usersReducer.reducer;
